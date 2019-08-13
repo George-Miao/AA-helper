@@ -14,7 +14,7 @@ class AutoHelper(object):
             self.log.info(f'Import config success: {config_name}.py')
             if not self.verify_config():
                 self.log.warning('Config file is not compliant.'
-                                     'Missing args will be blank')
+                                 'Missing args will be blank')
         except ImportError as e:
             self.log.critical('Import config error')
 

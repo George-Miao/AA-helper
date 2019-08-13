@@ -14,16 +14,16 @@ class ADBError(Exception):
     pass
 
 
-class ADBConnectionError(ADBError):
+class ADBRunCommandError(ADBError):
     """
-    An ADB connection Error occurred (Unable to find the host or the host is not exist)
+    An ADB error occurred when running command
     """
     pass
 
 
-class ADBRunCommandError(ADBError):
+class ADBDetectHostError(ADBError):
     """
-    An ADB error occurred when running command
+    An ADB error occurred when detecting host
     """
     pass
 
