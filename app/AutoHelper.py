@@ -1,10 +1,11 @@
 import importlib
+from os import path, getcwd
 from util import Log, ADBClient, Ocr
 from util.exceptions import *
 
 
 class AutoHelper(object):
-    def __init__(self, config_name='sample_config'):
+    def __init__(self, config_name='sample_config', *args):
         # Instantiate util.Log module
         self.log = Log()
 
@@ -16,22 +17,25 @@ class AutoHelper(object):
                 self.log.warning('Config file is not compliant.'
                                  'Missing args will be blank')
         except ImportError as e:
-            self.log.critical('Import config error')
+            self.log.critical(f'Import config error:\n{e}')
 
-        #  Instantiate util.ADB_client to interact with emulator
-        self.adb = ADBClient(self.config.ADB_root, self.config.ADB_host)
+        # Instantiate util.ADB_client to interact with emulator
+        try:
+            self.adb = ADBClient(self.config.ADB_root, self.config.ADB_host)
+        except ADBError as e:
+            self.log.critical(f'ADB Error:\n{e}')
 
-        if not self.adb.test_connect():  # Test if the ADB host(s) are available
-            self.log.critical('ADB host(s) are not available')
-        else:
-            self.log.info('ADB host(s) are available')
-
-        #  Instantiate util.Ocr to interact with Baidu-api
+        # Instantiate util.Ocr to interact with Baidu-api
         try:
             self.ocr = Ocr(self.config.APP_ID, self.config.API_KEY, self.config.SECRET_KEY)
         except AIPError as e:
-            self.log.critical(f'Connecting to Baidu-api error:'
-                                  f'{e}')
+            self.log.critical(f'Connecting to Baidu-api error:'f'{e}')
+
+    def init_coordinate(self):
+        try:
+            self.adb.screen_shot('homepage.png')
+        except Exception as e:
+            print(e)
 
     def verify_config(self):
         """

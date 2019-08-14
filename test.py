@@ -1,7 +1,5 @@
-from util import ADBClient
-from util import ADBDetectHostError
-from subprocess import run
+from app import AutoHelper
 
-b = ADBClient('../../Program Files/Nox/bin/adb.exe')
+a = AutoHelper()
 
-print(b.host)
+a.init_coordinate()
