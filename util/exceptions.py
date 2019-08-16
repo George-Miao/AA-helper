@@ -28,6 +28,13 @@ class ADBDetectHostError(ADBError):
     pass
 
 
+class ADBScreenShotError(ADBError):
+    """
+    An ADB error occurred when capturing screen
+    """
+    pass
+
+
 # Logging Error
 class LogError(Exception):
     """

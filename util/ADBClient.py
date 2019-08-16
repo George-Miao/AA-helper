@@ -6,7 +6,7 @@ This module contains the ADBClient class which is a simple wrapper of ADB.
 """
 from os import path
 from subprocess import run, SubprocessError
-from .exceptions import ADBRunCommandError, ADBDetectHostError
+from .exceptions import ADBRunCommandError, ADBDetectHostError, ADBScreenShotError
 
 
 class ADBClient(object):
@@ -67,6 +67,7 @@ class ADBClient(object):
         else:
             return host_list[0]
 
+    # Function for interacting with ADB
     def run_command(self, args):
         """
         Run ADB command
@@ -79,8 +80,24 @@ class ADBClient(object):
         except SubprocessError as e:
             raise ADBRunCommandError(f'Error Occurred when running {command} >> {self.host}:\ne')
 
-    def screen_shot(self, pic_name):
-        return self.run_command(f"screencap -p | sed > {pic_name}.png")
+    def screen_shot(self, pic_path):
+        """
+        To capture a screen shot and save it to pic_path
+        :param pic_path: The abs path of screen shot, pictures/ by default
+        :return:
+        """
+        self.run_command(f'shell screencap -p /sdcard/screen.png')
+        if not path.exists(pic_path):
+            self.run_command(f'pull /sdcard/screen.png {pic_path}')
+        else:
+            raise ADBScreenShotError(f'{pic_path} already exist')
+        self.run_command(f'shell rm /sdcard/screen.png')
+
+    @property
+    def window_size(self):
+        x_y = self.run_command('shell wm size').replace(b'\r\r\n', b'')\
+            .decode('utf-8').replace('Physical size: ', '').split('x')
+        return [int(x) for x in x_y]
 
     def __str__(self):
         return f'ADBClient(host = {self.host}, path = {self.path}, is_connected = {self.is_connected})'
