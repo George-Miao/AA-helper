@@ -6,31 +6,18 @@ This module contains the set of Auto Helper exceptions.
 """
 
 
-#  ADB Error
+# Auto Helper Error
+class AutoHelperError(Exception):
+    """
+    An AutoHelper error
+    """
+    pass
+
+
+# ADB Error
 class ADBError(Exception):
     """
     An ADB base exception
-    """
-    pass
-
-
-class ADBRunCommandError(ADBError):
-    """
-    An ADB error occurred when running command
-    """
-    pass
-
-
-class ADBDetectHostError(ADBError):
-    """
-    An ADB error occurred when detecting host
-    """
-    pass
-
-
-class ADBScreenShotError(ADBError):
-    """
-    An ADB error occurred when capturing screen
     """
     pass
 
@@ -47,12 +34,5 @@ class LogError(Exception):
 class OCRError(Exception):
     """
     An OCR base exception
-    """
-    pass
-
-
-class AIPError(OCRError):
-    """
-    An Baidu-Aip error
     """
     pass

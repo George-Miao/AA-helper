@@ -1,5 +1,9 @@
-from app import AutoHelper
+a = {
+   'a': 'b',
+   'v': 'd'
+}
 
-a = AutoHelper()
+def b(**kwargs):
+   print(kwargs['a'])
 
-a.init_coordinate()
+print(b.__name__)
